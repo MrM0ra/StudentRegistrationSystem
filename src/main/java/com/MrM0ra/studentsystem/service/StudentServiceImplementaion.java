@@ -1,5 +1,21 @@
 package com.MrM0ra.studentsystem.service;
 
-public class StudentServiceImplementaion {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.MrM0ra.studentsystem.model.Student;
+import com.MrM0ra.studentsystem.repository.StudentRepo;
+
+@Service
+public class StudentServiceImplementaion implements StudentServiceInterface {
+
+	@Autowired
+	private StudentRepo studRepo;
+
+	@Override
+	public Student saveStudent(Student student) {
+		studRepo.save(student);
+		return student;
+	}
+	
 }
