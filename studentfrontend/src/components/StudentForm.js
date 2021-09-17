@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function StudentForm() {
     const [studentName, setStudentName] = useState("");
     const [address, setAddress] = useState("");
+    const [students, setStudents] = useState([]);
     const divStyle={ display: "grid",
         justifyContent: "center",
     };
@@ -18,6 +19,13 @@ export default function StudentForm() {
             console.log("New student added")
         })
     }
+    useEffect( () => {
+        fetch("http://localhost:8081/student/getAll")
+        .then(res => res.json())
+        .then((result) => {
+            setStudents(result);
+        }
+        )},[])
     return (
         <div style={divStyle}>
             <h1>Add students</h1>
@@ -27,6 +35,25 @@ export default function StudentForm() {
                     <input type="text" placeholder="Student address" id="address" value={address} onChange={(e)=>setAddress(e.target.value)}></input>
                     <input type="submit" id="btn" value="submit" onClick={handleClick}></input>
                 </form>
+            </div>
+            <h1>Students</h1>
+            <div>
+                <table>
+                    <thead>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>ADDRESS</th>
+                    </thead>
+                    <tbody>
+                    {students.map(student => (
+                    <tr key={student.id}>
+                        <td>{student.id}</td>
+                        <td>{student.studentName}</td>
+                        <td>{student.address}</td>
+                    </tr>
+                ))}                        
+                    </tbody>
+                </table>
             </div>
         </div>
     )
